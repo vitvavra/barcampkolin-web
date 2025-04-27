@@ -1,0 +1,30 @@
+{% extends 'tailwind_2_layout.html.twig' %}
+
+{% block choice_widget %}
+    {% with {widget_class: 'select select-bordered w-full'} %}
+        {{ parent() }}
+    {% endwith %}
+{% endblock %}
+
+{% block form_widget_simple %}
+    {% with {widget_class: 'input input-bordered w-full'} %}
+        {{ parent() }}
+    {% endwith %}
+{% endblock %}
+
+{% block textarea_widget %}
+    {% with {widget_class: 'textarea textarea-bordered mt-1 w-full'} %}
+        {{ parent() }}
+    {% endwith %}
+{% endblock %}
+
+{% block button_row %}
+    {% with {row_attr: {class: 'flex flex-col'}} %}
+        {{ parent() }}
+    {% endwith %}
+{% endblock %}
+
+{% block submit_widget %}
+    {% set attr = {class: 'btn btn-success btn-sm mt-2 self-end'} %}
+    {{ parent() }}
+{% endblock %}

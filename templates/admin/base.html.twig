@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title '' %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    {% block stylesheets %}{% endblock %}
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app', {'nonce': csp_nonce('script')}) }}{% endblock %}
+    {% endblock %}
+</head>
+<body class="text-sm font-[Helvetica]">
+<div class="bg-zinc-800 text-zinc-400 h-12 flex flex-row items-center">
+    <a class="flex items-center justify-center pl-16 px-6 text-lg">Barcamp Kolín</a>
+    {% with {url: "/admin", title: 'Nastavení'} %}
+        {% block menu_item %}
+            <a class="{% if url == app.request.pathInfo %}bg-black text-gray-300 {% endif %}h-full flex items-center justify-center px-3 hover:text-gray-300" href="{{ url }}">{{ title }}</a>
+        {% endblock %}
+    {% endwith %}
+    {% with {url: "/admin/dashboard/enums", title: 'Seznamy'} %}{{ block('menu_item') }}{% endwith %}
+    {% with {url: "/admin/dashboard/schedule", title: 'Harmonogram'} %}{{ block('menu_item') }}{% endwith %}
+    {% with {url: "/admin/conference/conferee", title: 'Účastníci'} %}{{ block('menu_item') }}{% endwith %}
+    {% with {url: "/admin/conference/talks", title: 'Přednášky'} %}{{ block('menu_item') }}{% endwith %}
+    {% with {url: "/admin/conference/program", title: 'Program'} %}{{ block('menu_item') }}{% endwith %}
+    {% with {url: "/admin/mail", title: 'E-maily'} %}{{ block('menu_item') }}{% endwith %}
+    {% with {url: "/admin/file", title: 'Soubory'} %}{{ block('menu_item') }}{% endwith %}
+    {% with {url: "/admin/partners", title: 'Partneři'} %}{{ block('menu_item') }}{% endwith %}
+    {% with {url: "/admin/system", title: 'System'} %}{{ block('menu_item') }}{% endwith %}
+</div>
+<div class="m-6">
+    {% block body %}
+    {% endblock %}
+</div>
+</body>
+</html>

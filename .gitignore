@@ -1,15 +1,27 @@
+/.idea/
 /.deployment-credentials.php
 /.docker/
 /app/config/config.local.neon
+/assets/bower_components/
 /log/
 /node_modules/
 /temp/
 /vendor/
 /www/archive/
-/www/static/**/*.*.map
 /www/upload/
-.idea/
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###
 .symfony5/
-assets/bower_components/
-assets/vendor/
-var/

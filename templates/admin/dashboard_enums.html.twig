@@ -1,0 +1,86 @@
+{% extends 'admin/base.html.twig' %}
+{% block body %}
+    {% set enums = {
+        faqs: {
+            title: 'FAQ',
+            id: 'faqs',
+            list: [
+                'Seznam otázek a odpovědí, zobrazuje se na hlavní stránce.',
+                'Klíč = otázka',
+                'Hodnota = odpověď'
+            ],
+        },
+        talk_categories: {
+            title: 'Kategorie',
+            id: 'talk_categories',
+            list: [
+                'Kategorie přednášek, do kterých mohou speakeři vypisovat svoje přednášky.',
+                'Klíč = název, který se zobrazí na webu a přednášejícícmu ve formuláři',
+                'Hodnota = název, který se zobrazí na webu a přednášejícícmu ve formuláři',
+                'POZOR! Kategorie, které jsou již použity u přednášek, neodstraňujte, ani jim neměňte Klíč!'
+            ]
+        },
+        talk_durations: {
+            title: 'Délky přednášek',
+            id: 'talk_durations',
+            list: [
+                'Délky přednášek, které jsou nabízeny přednášejícímu v registračním formuláři. Nezbrazuje se veřejnosti.',
+                'Klíč = technický klíč pro uložení do databáze. Tip: nepoužívejte diakritiku, mezery (příklad: 20 nikoliv 20 minut)',
+                'Hodnota = název, který se zobrazí přednášejícícmu ve formuláři'
+            ]
+        },
+        talk_rooms: {
+            title: 'Přednáškové místnosti',
+            id: 'talk_rooms',
+            list: [
+                'Přednáškové místnosti, do kterých lze zařazovat přednášky. Vykreslují se na webu.',
+                'Klíč = technický klíč pro uložení do databáze. Nepoužívejte diakritiku, mezery (příklad: jednadvacitka)',
+                'Hodnota = název, který se zobrazí na webu',
+                'POZOR! Místnosti, které jsou již použity u přednášek, neodstraňujte, ani jim neměňte Klíč!'
+            ]
+        }} %}
+    {% for item in enums %}
+        <div class="py-4 border-b-4 border-solid border-zinc-800">
+            <h2 class="text-2xl font-bold">{{ item.title }}</h2>
+            <ul class="ml-4 list-disc">
+                {% for list_item in item.list %}
+                    <li {% if loop.first %}class="font-bold"{% endif %}>{{ list_item }}</li>
+                {% endfor %}
+            </ul>
+            {% set form = forms[item.id] %}
+            {{ form_start(form) }}
+            <div id="{{ item.id }}" {{ stimulus_controller('form-collection') }}
+                 data-form-collection-index-value="{{ form.enums|length > 0 ? form.enums|last.vars.name + 1 : 0 }}"
+                 data-form-collection-prototype-value="{{ _self.printForm(form.enums.vars.prototype)|e('html_attr') }}"
+            >
+
+                <div class="flex flex-row-reverse">
+                    {{ form_widget(form.save) }}
+                    <button class="btn btn-sm btn-primary mt-2" {{ stimulus_action('form-collection', 'addCollectionElement') }}>+</button>
+                </div>
+                <div
+                        {{ stimulus_target('form-collection', 'collectionContainer') }}>
+                    <div class="grid grid-cols-5 gap-2">
+                        <div class="col-span-2">Klíč</div>
+                        <div class="col-span-2">Hodnota</div>
+                        <div>Akce</div>
+                    </div>
+                    {% for item in form.enums %}
+                        {{ _self.printForm(item) }}
+                    {% endfor %}
+                </div>
+            </div>
+            {{ form_row(form._token) }}
+            {{ form_end(form, {render_rest: false}) }}
+        </div>
+    {% endfor %}
+{% endblock %}
+{% macro printForm(item) %}
+    <div class="grid grid-cols-5 gap-2 collection-item">
+        <div class="col-span-2">{{ form_widget(item.key) }}</div>
+        <div class="col-span-2">{{ form_widget(item.value) }}</div>
+        <div class="flex flex-row-reverse">
+            <button class="btn btn-sm btn-warning" {{ stimulus_action('form-collection', 'deleteCollectionElement') }}>Odstranit</button>
+        </div>
+    </div>
+{% endmacro %}

@@ -1,0 +1,16 @@
+framework:
+    asset_mapper:
+        # The paths to make available to the asset mapper.
+        paths:
+            - assets/
+        missing_import_mode: strict
+        excluded_patterns:
+            - '**/assets/fonts/*'
+            - '**/assets/css/*'
+            - '**/assets/js/*'
+            - '**/assets/less/*'
+            - '**/bower_components/*'
+when@prod:
+    framework:
+        asset_mapper:
+            missing_import_mode: warn

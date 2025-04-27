@@ -17,12 +17,13 @@ class RouterFactory
      * @return Nette\Application\IRouter
      * @throws Nette\InvalidArgumentException
      */
-    public static function createRouter(ArchiveManager $archiveManager): \Nette\Application\Routers\RouteList
+    public static function createRouter(ArchiveManager $archiveManager): RouteList
     {
         $router = new RouteList;
 
         // Admin
         $adminRouter = new RouteList('Admin');
+        $adminRouter[] = new Route('admin/dashboard/enums', 'Symfony:default');
         $adminRouter[] = new Route('admin/<presenter>/<action>[/<id>]', 'Dashboard:default');
         $router[] = $adminRouter;
 
@@ -54,6 +55,7 @@ class RouterFactory
         $router[] = new Route('upravit-prednasku', 'User:talk');
         $router[] = new Route('archiv', 'Archived:list');
         $router[] = new Route('privacy-policy', 'PrivacyPolicy:default');
+        $router->addRoute('assets/<path .+>', 'Symfony:default');
 
         $router[] = self::createArchiveRoutes($archiveManager->getArchivedYears());
 
@@ -74,7 +76,7 @@ class RouterFactory
      * @return RouteList
      * @throws Nette\InvalidArgumentException
      */
-    private static function createArchiveRoutes(array $archiverYears): \Nette\Application\Routers\RouteList
+    private static function createArchiveRoutes(array $archiverYears): RouteList
     {
         $archiveRouter = new RouteList();
 
@@ -88,6 +90,4 @@ class RouterFactory
 
         return $archiveRouter;
     }
-
-
 }

@@ -12,7 +12,7 @@ $configurator = new Configurator;
 
 $debugModeEnabler = (new DebugMode\Enabler($tempDir));
 $debugModeDetector = new DebugMode\Detector(DebugMode\Detector::MODE_FULL, $debugModeEnabler);
-$configurator->setDebugMode($debugModeDetector->isDebugMode());
+$configurator->setDebugMode(true);
 
 $configurator->enableTracy(__DIR__ . '/../log', 'pan@jakubboucek.cz');
 Debugger::getLogger()->emailSnooze = '1 hour';
